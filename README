@@ -1,0 +1,97 @@
+# Parallel Sentiment Analysis Implementation
+
+## Authors
+- Raghav Sharma (2023BCS50)
+- Gaurav Jhalani (2023BCS32)
+
+## Project Overview
+A high-performance sentiment analysis system implementing both sequential and parallel processing using OpenMP. The project demonstrates significant speedup in text preprocessing and embedding generation through parallel execution.
+
+## Performance Highlights
+- Preprocessing speedup: 3.6x for 10k tweets (3678ms → 1012ms)
+- Embedding speedup: 5.3x for 10k tweets (1276ms → 241ms)
+- Overall throughput increase: ~4x with 8 threads
+
+## Implementation Details
+- Text preprocessing and one-hot encoding optimized with OpenMP
+- Configurable vocabulary size and batch processing
+- Binary embedding format for efficient storage
+- ANN-based sentiment classification using PyTorch
+
+## Requirements
+### C++ Components
+- C++17 compiler
+- OpenMP support
+- macOS: `brew install libomp`
+
+### Python Components
+- Python 3.x
+- PyTorch
+- matplotlib
+- numpy
+
+## Building the Project
+```bash
+# Compile parallel implementation
+clang++ -Xpreprocessor -fopenmp \
+    main.cpp preprocessor.cpp parallel_encoder.cpp \
+    -I/opt/homebrew/opt/libomp/include \
+    -L/opt/homebrew/opt/libomp/lib \
+    -lomp \
+    -o parallel_processor -std=c++17
+
+# Compile sequential implementation
+clang++ -Xpreprocessor -fopenmp \
+    sequential_processor.cpp preprocessor.cpp \
+    parallel_encoder.cpp sequential_main.cpp \
+    -I/opt/homebrew/opt/libomp/include \
+    -L/opt/homebrew/opt/libomp/lib \
+    -lomp \
+    -o sequential_processor -std=c++17
+```
+
+## Usage
+```bash
+# Set number of OpenMP threads
+export OMP_NUM_THREADS=8
+
+# Run parallel processor
+./parallel_processor
+
+# Run sequential processor
+./sequential_processor
+
+# Train ANN classifier
+python3 sentiment_ann.py
+
+# Generate performance plots
+python3 plot_results.py
+```
+
+## Repository Structure
+```
+.
+├── src/
+│   ├── parallel_processor.cpp
+│   ├── sequential_processor.cpp
+│   ├── preprocessor.cpp
+│   └── parallel_encoder.cpp
+├── include/
+│   ├── parallel_processor.hpp
+│   ├── sequential_processor.hpp
+│   └── preprocessor.hpp
+├── python/
+│   ├── sentiment_ann.py
+│   └── plot_results.py
+└── data/
+    ├── raw/
+    └── encodings/
+```
+
+## Results
+Performance comparison and speedup analysis graphs are generated in:
+- `performance_comparison.png`
+- `speedup_analysis.png`
+
+## License
+MIT License
