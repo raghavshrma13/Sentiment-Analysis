@@ -93,5 +93,5 @@ Performance comparison and speedup analysis graphs are generated in:
 - `performance_comparison.png`
 - `speedup_analysis.png`
 
-## License
-MIT License
+To run the sentiment analysis model - run the file sentiment_ann.py
+command - python3 sentiment_ann.py
